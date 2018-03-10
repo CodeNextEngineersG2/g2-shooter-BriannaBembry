@@ -32,6 +32,15 @@ var alienBulletDiameter;
 var alienBulletX;
 var alienBulletY;
 
+function setup() {
+	canvas = createCanvas(500,400);
+	background(27, 39, 102); 
+	gameScreen = select('#game-screen'); 
+	canvas.parent(gameScreen);
+}
+
+
+
 
 /*
  * setup()
