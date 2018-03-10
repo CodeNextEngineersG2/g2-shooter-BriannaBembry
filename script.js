@@ -39,13 +39,17 @@ function setup() {
 	gameScreen = select('#game-screen'); 
 	canvas.parent(gameScreen);
 	//	shipColor = fill(42,187,51) --> do I need this here? my code still runs when its just in function drawShip()
-	shipDiamater = 25;
+	shipDiamater = 100;
 	shipSpeed = 5; 
 	shipX = 250; 
 	shipY = 350; 
 	bulletDiameter = 25; 
 	bulletSpeed = 10;
 	shipShooting = false; 
+	alienDiameter = 50;
+	alienVelocity = 7;
+	alienX = 30;
+	alienY = 30;
 }
 
 function draw() {
@@ -54,6 +58,7 @@ function draw() {
 	if(shipShooting == true){
 		drawBullet();
 	}
+	drawAlien();
 }
 
 function drawShip() {
@@ -85,6 +90,15 @@ function drawBullet() {
 		shipShooting = false;
 	}
 }
+
+function drawAlien() {
+	alienX += alienVelocity; 
+	if(alienX >= 475 || alienX <= 0){
+		alienVelocity*= -1;
+	}
+	fill(255,78,34);
+	ellipse(alienX,alienY,alienDiameter,alienDiameter);
+}                                                  
 
 
 
