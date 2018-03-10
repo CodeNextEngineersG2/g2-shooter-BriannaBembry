@@ -20,6 +20,7 @@ var shipColor;
 var bulletDiameter;
 var bulletX;
 var bulletY;
+var bulletSpeed;
 
 // Alien Variables
 var alienDiameter;
@@ -38,15 +39,21 @@ function setup() {
 	gameScreen = select('#game-screen'); 
 	canvas.parent(gameScreen);
 	//	shipColor = fill(42,187,51) --> do I need this here? my code still runs when its just in function drawShip()
-	shipDiamater = 25
+	shipDiamater = 25;
 	shipSpeed = 5; 
 	shipX = 250; 
 	shipY = 350; 
+	bulletDiameter = 25; 
+	bulletSpeed = 10;
+	shipShooting = false; 
 }
 
 function draw() {
 	background(27,39,102);
 	drawShip();
+	if(shipShooting == true){
+		drawBullet();
+	}
 }
 
 function drawShip() {
@@ -57,6 +64,25 @@ function drawShip() {
 	}
 	if(keyIsDown(RIGHT_ARROW) && shipX < 450){
 		shipX += shipSpeed;
+	}
+}
+
+function keyPressed() {
+	if(keyCode === 32 && shipShooting == false) {
+		bulletX = shipX;
+		bulletY = shipY;
+		shipShooting = true; 
+	}
+}
+
+function drawBullet() {
+	if(bulletY > 0){
+		fill(171,174,171);
+		ellipse(bulletX,bulletY,bulletDiameter,bulletDiameter);
+		bulletY -= bulletSpeed;
+	}
+	else {
+		shipShooting = false;
 	}
 }
 
