@@ -34,9 +34,30 @@ var alienBulletY;
 
 function setup() {
 	canvas = createCanvas(500,400);
-	background(27, 39, 102); 
+	background(27,39,102); 
 	gameScreen = select('#game-screen'); 
 	canvas.parent(gameScreen);
+	//	shipColor = fill(42,187,51) --> do I need this here? my code still runs when its just in function drawShip()
+	shipDiamater = 25
+	shipSpeed = 5; 
+	shipX = 250; 
+	shipY = 350; 
+}
+
+function draw() {
+	background(27,39,102);
+	drawShip();
+}
+
+function drawShip() {
+	shipColor = fill(42,187,51); 
+	ellipse(shipX,shipY,100,100);
+	if(keyIsDown(LEFT_ARROW) && shipX > 50) {
+		shipX -= shipSpeed;
+	}
+	if(keyIsDown(RIGHT_ARROW) && shipX < 450){
+		shipX += shipSpeed;
+	}
 }
 
 
