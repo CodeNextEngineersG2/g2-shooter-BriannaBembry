@@ -50,6 +50,9 @@ function setup() {
 	alienVelocity = 7;
 	alienX = 30;
 	alienY = 30;
+	alienBulletDiameter = 25;
+	alienShooting = false; 
+
 }
 
 function draw() {
@@ -59,6 +62,9 @@ function draw() {
 		drawBullet();
 	}
 	drawAlien();
+	if (alienShooting == true) {
+		drawAlienBullet(); 
+	}
 }
 
 function drawShip() {
@@ -81,10 +87,16 @@ function keyPressed() {
 }
 
 function drawBullet() {
-	if(bulletY > 0){
+	var hitAlien = checkCollision(alienX, alienY, alienDiameter, bulletX, bulletY, bulletDiameter);
+	if(bulletY > 0 && !hitAlien) {
 		fill(171,174,171);
 		ellipse(bulletX,bulletY,bulletDiameter,bulletDiameter);
-		bulletY -= bulletSpeed;
+		bulletY -= bulletSpeed; 
+	}
+	else if(hitAlien){
+		resetAlien();
+		alienVelocity++;
+		shipShooting = false;
 	}
 	else {
 		shipShooting = false;
@@ -93,12 +105,57 @@ function drawBullet() {
 
 function drawAlien() {
 	alienX += alienVelocity; 
-	if(alienX >= 475 || alienX <= 0){
+	if(alienX >= 475 || alienX <= 10){
 		alienVelocity*= -1;
 	}
 	fill(255,78,34);
-	ellipse(alienX,alienY,alienDiameter,alienDiameter);
-}                                                  
+	ellipse(alienX,alienY,alienDiameter,alienDiameter)
+	if(random(4) <1 && !alienShooting) {
+		alienBulletX = alienX;
+		alienBulletY = alienY; 
+		alienShooting = true; 
+	}
+}   
+
+function drawAlienBullet() {
+	var hitShip = checkCollision(alienBulletX, alienBulletY, alienBulletDiameter, shipX, shipY, shipDiameter);
+	if(alienBulletY < 400 && !hitShip) {
+		fill(125, 40, 155);
+		ellipse(alienBulletX, alienBulletY, alienBulletDiameter, alienBulletDiameter);
+		alienBulletY += 10; 
+	}
+	else if(hitShip == true) {
+		gameOver();
+	}
+
+	else {
+		alienShooting = false; 
+	}
+}            
+
+function checkCollision(alienBulletX, alienBulletY, alienBulletDiameter, shipX, shipY, shipDiameter) {
+	var distance = dist(alienBulletX, alienBulletY, shipX, shipY); 
+	if((alienBulletDiameter/2) + (shipDiameter/2) >= distance) {
+		return true; 
+	}
+	else {
+		return false; 
+	}
+}     
+
+function resetAlien() {
+	alienVelocity = abs(alienVelocity);
+	alienX = 30;
+	alienY = 30; 
+}
+
+function gameOver() {
+	window.alert("Game Over!");
+	setup();
+}
+
+
+
 
 
 
