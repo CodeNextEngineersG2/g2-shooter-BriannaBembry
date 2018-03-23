@@ -38,24 +38,12 @@ function setup() {
 	background(27,39,102); 
 	gameScreen = select('#game-screen'); 
 	canvas.parent(gameScreen);
-	//	shipColor = fill(42,187,51) --> do I need this here? my code still runs when its just in function drawShip()
-	shipDiamater = 100;
-	shipSpeed = 5; 
-	shipX = 250; 
-	shipY = 350; 
-	bulletDiameter = 25; 
-	bulletSpeed = 10;
-	shipShooting = false; 
-	alienDiameter = 50;
-	alienVelocity = 7;
-	alienX = 30;
-	alienY = 30;
-	alienBulletDiameter = 25;
-	alienShooting = false; 
-
+	scoreDisplay = select("#score-display"); 
+	resetGame(); 
 }
 
 function draw() {
+	if (gameRunning == true) {
 	background(27,39,102);
 	drawShip();
 	if(shipShooting == true){
@@ -64,6 +52,7 @@ function draw() {
 	drawAlien();
 	if (alienShooting == true) {
 		drawAlienBullet(); 
+	}
 	}
 }
 
@@ -79,7 +68,7 @@ function drawShip() {
 }
 
 function keyPressed() {
-	if(keyCode === 32 && shipShooting == false) {
+	if(keyCode === 32 && shipShooting == false && gameRunning == true) {
 		bulletX = shipX;
 		bulletY = shipY;
 		shipShooting = true; 
@@ -97,6 +86,8 @@ function drawBullet() {
 		resetAlien();
 		alienVelocity++;
 		shipShooting = false;
+		score++;
+		scoreDisplay.html(score);
 	}
 	else {
 		shipShooting = false;
@@ -150,8 +141,29 @@ function resetAlien() {
 }
 
 function gameOver() {
-	window.alert("Game Over!");
-	setup();
+	gameRunning = false; 
+	window.alert("Game Over! Your final score is: " + score);
+	resetGame();
+}
+
+function resetGame() {
+	shipColor = fill(42,187,51); 
+	shipDiameter = 100;
+	shipSpeed = 5; 
+	shipX = 250; 
+	shipY = 350; 
+	bulletDiameter = 25; 
+	bulletSpeed = 10;
+	shipShooting = false; 
+	alienDiameter = 50;
+	alienVelocity = 7;
+	alienX = 30;
+	alienY = 30;
+	alienBulletDiameter = 25;
+	alienShooting = false; 
+	score = 0; 
+	scoreDisplay.html(score);
+	gameRunning = true; 
 }
 
 
