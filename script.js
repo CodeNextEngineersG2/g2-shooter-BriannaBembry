@@ -8,6 +8,7 @@ var gameRunning;
 var shipShooting;
 var alienShooting;
 var score;
+var pause; 
 
 // Ship Variables
 var shipDiameter;
@@ -44,7 +45,7 @@ function setup() {
 
 function draw() {
 	if (gameRunning == true) {
-	background(27,39,102);
+	background(111,203,159);
 	drawShip();
 	if(shipShooting == true){
 		drawBullet();
@@ -53,16 +54,22 @@ function draw() {
 	if (alienShooting == true) {
 		drawAlienBullet(); 
 	}
+	if(pause == true){
+		gameRunning = false; 
+	}
 	}
 }
 
 function drawShip() {
-	shipColor = fill(42,187,51); 
-	ellipse(shipX,shipY,100,100);
-	if(keyIsDown(LEFT_ARROW) && shipX > 50) {
+	noStroke();
+	fill(211, 232, 234);
+	ellipse(shipX,shipY-25,75,75);
+	shipColor = fill(9, 173, 9); 
+	ellipse(shipX,shipY,shipDiameter,45);
+	if(keyIsDown(LEFT_ARROW) && shipX > 75) {
 		shipX -= shipSpeed;
 	}
-	if(keyIsDown(RIGHT_ARROW) && shipX < 450){
+	if(keyIsDown(RIGHT_ARROW) && shipX < 425){
 		shipX += shipSpeed;
 	}
 }
@@ -70,8 +77,15 @@ function drawShip() {
 function keyPressed() {
 	if(keyCode === 32 && shipShooting == false && gameRunning == true) {
 		bulletX = shipX;
-		bulletY = shipY;
+		bulletY = shipY - 75;
 		shipShooting = true; 
+	}
+	if(keyCode === 80 && gameRunning == true){
+		gamePaused(); 
+	}
+	else {
+		gameRunning = true; 
+		pause = false; 
 	}
 }
 
@@ -99,12 +113,15 @@ function drawAlien() {
 	if(alienX >= 475 || alienX <= 10){
 		alienVelocity*= -1;
 	}
-	fill(255,78,34);
+	fill(251,46,1);
 	ellipse(alienX,alienY,alienDiameter,alienDiameter)
 	if(random(4) <1 && !alienShooting) {
 		alienBulletX = alienX;
-		alienBulletY = alienY; 
+		alienBulletY = alienY + 20; 
 		alienShooting = true; 
+	}
+	if(alienX >= 475){
+		alienY += 10; 
 	}
 }   
 
@@ -126,7 +143,7 @@ function drawAlienBullet() {
 
 function checkCollision(alienBulletX, alienBulletY, alienBulletDiameter, shipX, shipY, shipDiameter) {
 	var distance = dist(alienBulletX, alienBulletY, shipX, shipY); 
-	if((alienBulletDiameter/2) + (shipDiameter/2) >= distance) {
+	if((alienBulletDiameter/2) + (37) >= distance) {
 		return true; 
 	}
 	else {
@@ -146,17 +163,22 @@ function gameOver() {
 	resetGame();
 }
 
+function gamePaused() {
+	gameRunning = false; 
+	pause = true; 
+}
+
 function resetGame() {
 	shipColor = fill(42,187,51); 
-	shipDiameter = 100;
+	shipDiameter = 150;
 	shipSpeed = 5; 
 	shipX = 250; 
-	shipY = 350; 
+	shipY = 360; 
 	bulletDiameter = 25; 
 	bulletSpeed = 10;
 	shipShooting = false; 
 	alienDiameter = 50;
-	alienVelocity = 7;
+	alienVelocity = 5;
 	alienX = 30;
 	alienY = 30;
 	alienBulletDiameter = 25;
@@ -164,7 +186,11 @@ function resetGame() {
 	score = 0; 
 	scoreDisplay.html(score);
 	gameRunning = true; 
+	pause = true; 
 }
+
+
+
 
 
 

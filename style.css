@@ -8,6 +8,13 @@ html {
 
 body {
   text-align: center;
+  background-color:#fffeb3; 
 }
 
 /* Create your styles below */
+
+ul {
+	list-style: none;
+}
+
+
